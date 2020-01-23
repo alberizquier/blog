@@ -2,8 +2,6 @@ const router = require('express').Router();
 const Post = require('../models/post');
 const Comment= require('../models/comment');
 const tokenVerify = require('../middlewares/authentication');
-const adminVerify = require('../middlewares/roleVerify');
-const publisherVerify = require('../middlewares/roleVerify');
 const roleVerify = require('../middlewares/roleVerify');
 
 

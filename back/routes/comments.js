@@ -2,8 +2,6 @@ const router = require('express').Router();
 const Comment = require('../models/comment');
 const Post = require('../models/post');
 const tokenVerify = require('../middlewares/authentication');
-const adminVerify = require('../middlewares/roleVerify');
-const publisherVerify = require('../middlewares/roleVerify');
 const roleVerify = require('../middlewares/roleVerify');
 
 router.get('/comments', (req, res) => {

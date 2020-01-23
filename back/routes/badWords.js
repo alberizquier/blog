@@ -1,9 +1,7 @@
 const router = require('express').Router();
 const BadWord = require('../models/badWord');
 const tokenVerify = require('../middlewares/authentication');
-const adminVerify = require('../middlewares/roleVerify');
-const publisherVerify = require('../middlewares/roleVerify');
-const roleVerify = require('../middlewares/roleVerify');
+const adminVerify = require('../middlewares/adminVerify');
 
 router.get('/badWords', [ tokenVerify, adminVerify ], (req, res) => {
     BadWord.find({})
@@ -26,7 +24,6 @@ router.post('/badWords', [ tokenVerify, adminVerify ], (req, res) => {
         level : req.body.level,
         word : req.body.word
     });
-
     word.save((err, wordDB) => {
         if (err) {
             return res.status(400).json({

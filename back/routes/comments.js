@@ -1,6 +1,10 @@
 const router = require('express').Router();
 const Comment = require('../models/comment');
 const Post = require('../models/post');
+const tokenVerify = require('../middlewares/authentication');
+const adminVerify = require('../middlewares/roleVerify');
+const publisherVerify = require('../middlewares/roleVerify');
+const roleVerify = require('../middlewares/roleVerify');
 
 router.get('/comments', (req, res) => {
     Comment.find({})
@@ -36,7 +40,7 @@ router.get('/posts/:id/comments', (req, res) => {
     });
 });
 
-router.post('/posts/:id/comments', async (req, res) => {
+router.post('/posts/:id/comments', [ tokenVerify, roleVerify ], async (req, res) => {
     const id = req.params.id;
     const post = await Post.findById(id);
     if (!post) {
@@ -66,7 +70,7 @@ router.post('/posts/:id/comments', async (req, res) => {
     });
 });
 
-router.put('/posts/:idPost/comments/:idComment', async (req, res) => {
+router.put('/posts/:idPost/comments/:idComment', [ tokenVerify, roleVerify ], async (req, res) => {
     const postId = req.params.idPost;
     const commentId = req.params.idComment;
     const post = await Post.findById(postId);
@@ -98,7 +102,7 @@ router.put('/posts/:idPost/comments/:idComment', async (req, res) => {
     });
 });
 
-router.delete('/posts/:postId/comments/:commentId', async (req, res) => {
+router.delete('/posts/:postId/comments/:commentId', [ tokenVerify, roleVerify ], async (req, res) => {
     const commentId = req.params.commentId;
     const postId = req.params.postId;
     const post = await Post.findById(postId);

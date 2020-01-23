@@ -1,6 +1,11 @@
 const router = require('express').Router();
 const Post = require('../models/post');
 const Comment= require('../models/comment');
+const tokenVerify = require('../middlewares/authentication');
+const adminVerify = require('../middlewares/roleVerify');
+const publisherVerify = require('../middlewares/roleVerify');
+const roleVerify = require('../middlewares/roleVerify');
+
 
 router.get('/posts', (req, res) => {
     Post.find({})
@@ -18,7 +23,7 @@ router.get('/posts', (req, res) => {
         });
 });
 
-router.post('/posts', (req, res) => {
+router.post('/posts', [ tokenVerify, roleVerify ], (req, res) => {
     let post = new Post({
         authorName: req.body.authorName,
         authorNickname: req.body.authorNickname,
@@ -40,7 +45,7 @@ router.post('/posts', (req, res) => {
     });
 });
 
-router.put('/posts/:id', (req, res) => {
+router.put('/posts/:id', [ tokenVerify, roleVerify ], (req, res) => {
     const id = req.params.id;
     const body = req.body;
 
@@ -79,7 +84,7 @@ router.get('/posts/:id', (req, res) => {
     });
 });
 
-router.delete('/posts/:id', async (req, res) => {
+router.delete('/posts/:id', [ tokenVerify, roleVerify ], async (req, res) => {
     const id = req.params.id;    
     await Post.findOneAndDelete({
         _id: id

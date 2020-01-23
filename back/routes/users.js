@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const tokenVerify = require('../middlewares/authentication');
 
-router.post('/users/login', tokenVerify, (req, res) => {
+router.post('/users/login', (req, res) => {
     User.findOne({
         email: req.body.email
     }, (err, userDB) => {
@@ -18,7 +18,7 @@ router.post('/users/login', tokenVerify, (req, res) => {
             return res.status(400).json({
                 ok: false,
                 err: {
-                    msg: 'User or password are incorrect'
+                    msg: '(User) or password are incorrect'
                 }
             });
         }
@@ -26,13 +26,13 @@ router.post('/users/login', tokenVerify, (req, res) => {
             return res.status(400).json({
                 ok: false,
                 err: {
-                    msg: 'User or password are incorrect'
+                    msg: 'User or (password) are incorrect'
                 }
             });
         }
         let token = jwt.sign({
             user: userDB
-        }, 'secret', { expiresIn: 60 * 60});
+        }, 'secret', { expiresIn: 60 * 60 * 24 * 30});
         res.json({
             ok: true,
             user: userDB,
@@ -47,9 +47,7 @@ router.post('/users', (req, res) => {
         nickname: req.body.nickname,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 10),
-        isAuthenticate: false,
-        isAdmin: false,
-        isPublisher: false
+        role: req.body.role
     });
 
     user.save((err, userDB) => {
@@ -64,6 +62,22 @@ router.post('/users', (req, res) => {
             user: userDB
         });
     });
+});
+
+router.get('/users', (req, res) => {
+    User.find({})
+        .exec((err, users) => {
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
+            res.json({
+                ok : true,
+                users
+            });
+        });
 });
 
 module.exports = router;

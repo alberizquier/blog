@@ -7,7 +7,7 @@ app.use(express.json());
 
 const mongoose = require('mongoose');
 
-app.use(require('./middlewares/authentication'));
+// app.use(require('./middlewares/authentication'));
 app.use(require('./routes/users'));
 app.use(require('./routes/posts'));
 app.use(require('./routes/comments'));

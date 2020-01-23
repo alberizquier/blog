@@ -11,9 +11,7 @@ const userSchema = new Schema({
       unique: true  
     },
     password  : String,
-    isAuthenticate : Boolean,
-    isAdmin : Boolean,
-    isPublisher : Boolean
+    role : String
 });
 
 

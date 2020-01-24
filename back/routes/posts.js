@@ -3,7 +3,7 @@ const Post = require('../models/post');
 const Comment= require('../models/comment');
 const tokenVerify = require('../middlewares/authentication');
 const roleVerify = require('../middlewares/roleVerify');
-
+const wordsVerifyPosts = require('../middlewares/wordVerifyPosts');
 
 router.get('/posts', (req, res) => {
     Post.find({})
@@ -21,13 +21,23 @@ router.get('/posts', (req, res) => {
         });
 });
 
-router.post('/posts', [ tokenVerify, roleVerify ], (req, res) => {
+router.post('/posts', [ tokenVerify, roleVerify, wordsVerifyPosts ], (req, res) => {
     let post = new Post({
         authorName: req.body.authorName,
         authorNickname: req.body.authorNickname,
         contentTitle: req.body.contentTitle,
         contentText: req.body.contentText
     });
+
+    Post.find({})
+        .exec((err, posts) => {
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
+        });
 
     post.save((err, postDB) => {
         if (err) {
@@ -43,7 +53,7 @@ router.post('/posts', [ tokenVerify, roleVerify ], (req, res) => {
     });
 });
 
-router.put('/posts/:id', [ tokenVerify, roleVerify ], (req, res) => {
+router.put('/posts/:id', [ tokenVerify, roleVerify, wordsVerifyPosts ], (req, res) => {
     const id = req.params.id;
     const body = req.body;
 

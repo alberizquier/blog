@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/blog',{
     useCreateIndex: true,
     useNewUrlParser: true,
-    useFindAndModify: false,
+    useFindAndModify: false
 })
     .then(db => console.log('DB is connected'))
     .catch(err => console.error(err));

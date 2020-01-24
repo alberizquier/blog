@@ -3,6 +3,7 @@ const Comment = require('../models/comment');
 const Post = require('../models/post');
 const tokenVerify = require('../middlewares/authentication');
 const roleVerify = require('../middlewares/roleVerify');
+const wordVerifyComments = require('../middlewares/wordVerifyComments');
 
 router.get('/comments', (req, res) => {
     Comment.find({})
@@ -38,7 +39,7 @@ router.get('/posts/:id/comments', (req, res) => {
     });
 });
 
-router.post('/posts/:id/comments', [ tokenVerify, roleVerify ], async (req, res) => {
+router.post('/posts/:id/comments', [ tokenVerify, roleVerify, wordVerifyComments ], async (req, res) => {
     const id = req.params.id;
     const post = await Post.findById(id);
     if (!post) {
@@ -68,7 +69,7 @@ router.post('/posts/:id/comments', [ tokenVerify, roleVerify ], async (req, res)
     });
 });
 
-router.put('/posts/:idPost/comments/:idComment', [ tokenVerify, roleVerify ], async (req, res) => {
+router.put('/posts/:idPost/comments/:idComment', [ tokenVerify, roleVerify, wordVerifyComments ], async (req, res) => {
     const postId = req.params.idPost;
     const commentId = req.params.idComment;
     const post = await Post.findById(postId);

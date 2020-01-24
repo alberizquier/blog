@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --watch app.js --watch routes/posts.js --watch routes/index.js --watch routes/users.js --watch routes/comments.js --watch routes/badWords.js --watch middlewares/authentication.js --watch middlewares/roleVerify.js --watch middlewares/adminVerify.js"
+    "start": "nodemon --watch app.js --watch routes/posts.js --watch routes/index.js --watch routes/users.js --watch routes/comments.js --watch routes/badWords.js --watch middlewares/authentication.js --watch middlewares/roleVerify.js --watch middlewares/adminVerify.js --watch middlewares/wordVerifyPosts.js --watch middlewares/wordVerifyComments.js"
   },
   "author": "",
   "license": "ISC",

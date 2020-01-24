@@ -1,5 +1,6 @@
 let roleVerify = (req, res, next) => {
     let role = req.user.role;
+    
     if (role === 'publisher' || role === 'admin') {
         next();
     } else {

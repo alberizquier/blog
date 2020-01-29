@@ -1,28 +1,55 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Menu></Menu>
+    <!-- <MenuActive></MenuActive> -->
+    <!-- <MainArticles></MainArticles> -->
+    <!-- <Articles></Articles> -->
+    <!-- <Destinations></Destinations> -->
+    <!-- <Post></Post> -->
+    <!-- <UserArea></UserArea> -->
+    <NewPost></NewPost>
+    <Footer id="footer"></Footer>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Menu from './components/Menu.vue'
+// import MenuActive from './components/MenuActive.vue'
+// import MainArticles from './components/MainArticles.vue'
+// import Articles from './components/Articles.vue'
+// import Destinations from './components/Destinations.vue'
+// import Post from './components/Post.vue'
+// import UserArea from './components/UserArea.vue'
+import NewPost from './components/NewPost.vue'
+import Footer from './components/Footer.vue'
+
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    Menu,
+    // MenuActive,
+    // MainArticles,
+    // Articles,
+    // Destinations,
+    // Post,
+    // UserArea,
+    NewPost,
+    Footer
   }
 }
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  position: relative;
 }
+
+#footer{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+}
+
 </style>

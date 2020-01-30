@@ -1,14 +1,46 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+// import Home from '../views/Home.vue'
+//import App from '../App.vue'
+import MainArticles from '../components/MainArticles.vue'
+import Destinations from '../components/Destinations.vue'
+import Articles from '../components/Articles.vue'
+import NewPost from '../components/NewPost.vue'
+import UserArea from '../components/UserArea.vue'
+import Post from '../components/Post.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: Home
+    name: 'App',
+    component: MainArticles
+  },
+  {
+    path: '/destinations',
+    name: 'Destinations',
+    component: Destinations
+  },
+  {
+    path: '/articles',
+    name: 'Articles',
+    component: Articles
+  },
+  {
+    path: '/:id/newPost',
+    name: 'newPost',
+    component: NewPost
+  },
+  {
+    path: '/myArticles/:id?',
+    name: 'myArticles',
+    component: UserArea
+  },
+  {
+    path: '/post/:id?',
+    name: 'post',
+    component: Post
   },
   {
     path: '/about',

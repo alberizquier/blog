@@ -7,6 +7,7 @@ const postSchema = new Schema({
     authorNickname : String,
     contentTitle : String,
     contentText  : String,
+    image : String,
     commentsList : Array
 });
 

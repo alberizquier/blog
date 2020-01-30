@@ -2,9 +2,9 @@
 <div id="menu">
     <nav>
         <ul>
-            <li>Inicio</li>
-            <li>Destinos</li>
-            <li id="edge">Artículos</li>
+            <li><router-link to='/'>Inicio</router-link></li>
+            <li><router-link to='/destinations'>Destinos</router-link></li>
+            <li id="edge"><router-link to='/articles'>Artículos</router-link></li>
             <li id="welcome"><img src="../assets/user.png" alt="">Bienvenido, Marco Polo</li>
             <li id="buttonLogout">Logout</li>
         </ul>

@@ -26,7 +26,8 @@ router.post('/posts', [ tokenVerify, roleVerify, wordsVerifyPosts ], (req, res) 
         authorName: req.body.authorName,
         authorNickname: req.body.authorNickname,
         contentTitle: req.body.contentTitle,
-        contentText: req.body.contentText
+        contentText: req.body.contentText,
+        image : req.body.image
     });
 
     Post.find({})

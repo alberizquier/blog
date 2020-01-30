@@ -17,8 +17,13 @@
 <script>
 export default {
   name: "NewPost",
+  mounted(){
+    this.id_from_url = this.$route.params.id;
+  },
   data() {
-    return {};
+    return {
+      id_from_url: null
+    };
   }
 };
 </script>

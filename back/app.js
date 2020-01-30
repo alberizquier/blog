@@ -1,8 +1,22 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
+const config = {
+    application: {
+        cors: {
+            server: [{
+                origin: "localhost:3000",
+                credentials: true
+            }]
+        }
+    }
+}
 
+app.use(cors(config.application.cors.server));
 const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(express.json());
 
 const mongoose = require('mongoose');

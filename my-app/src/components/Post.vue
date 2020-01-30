@@ -6,6 +6,8 @@
     </div>
     <img src="../assets/nz_pic.png" alt />
     <div id="content">
+      <span id="authorPost">Marco Polo</span>
+      <br>
       <span id="datePost">29/01/2020, 16:17</span>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum commodo venenatis tempus. Donec sed tortor eget lorem sagittis faucibus.
@@ -75,8 +77,13 @@
 <script>
 export default {
   name: "Post",
+  mounted(){
+    this.id_from_url = this.$route.params.id;
+  },
   data() {
-    return {};
+    return {
+
+    };
   }
 };
 </script>
@@ -112,6 +119,12 @@ div#container img{
 
 div#container div#content span#datePost {
   color: #61b983;
+  font-size: 16pt;
+  font-family: "Bebas Neue", cursive;
+}
+
+div#container div#content span#authorPost {
+  color: #35495e;
   font-size: 16pt;
   font-family: "Bebas Neue", cursive;
 }

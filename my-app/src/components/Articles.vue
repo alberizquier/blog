@@ -7,9 +7,10 @@
     <div id="posts">
       <div id="article" v-for="article in articles" :key="article._id">
         <div id="hideDiv">
-          <img id="imgSup" :src="article.image" alt />
+          <img id="imgSup" :src="article.image" alt= />
           <h3>{{article.contentTitle}}</h3>
           <p>{{article.contentText}}</p>
+          <p>{{article.date}}</p>
           <button>
             <router-link to="/Post">Leer más</router-link>
           </button>
@@ -31,8 +32,7 @@ export default {
   data() {
     return {
       articles: [],
-      url: "http://localhost:3000/posts",
-      urlImages: "http://localhost:3000/posts/get-image"
+      url: "http://localhost:3000/posts"
     };
   },
   methods: {

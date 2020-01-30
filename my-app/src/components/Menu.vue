@@ -18,13 +18,18 @@
         </ul>
       </nav>
       <div id="login">
-        <input type="text" placeholder="Email" id="email" v-model="userLogin.emailLogin" />
-        <input type="text" placeholder="Contraseña" id="pass" v-model="userLogin.passLogin" />
+        <input type="text" placeholder="Email" id="email" v-model="userLogin.email" />
+        <input type="text" placeholder="Contraseña" id="pass" v-model="userLogin.password" />
         <button @click="login()">Acceder</button>
       </div>
       <div id="register">
         <input type="text" placeholder="Nombre" id="name" v-model="userRegister.nameRegister" />
-        <input type="text" placeholder="Apodo" id="nickname" v-model="userRegister.nicknameRegister" />
+        <input
+          type="text"
+          placeholder="Apodo"
+          id="nickname"
+          v-model="userRegister.nicknameRegister"
+        />
         <input type="text" placeholder="Email" id="email" v-model="userRegister.emailRegister" />
         <input type="text" placeholder="Contraseña" id="pass" v-model="userRegister.passRegister" />
         <button @click="register()">Enviar</button>
@@ -44,7 +49,7 @@
             <router-link to="/articles">Artículos</router-link>
           </li>
           <li id="welcome">
-            <img src="../assets/user.png" alt />Bienvenido, Marco Polo
+            <img src="../assets/user.png" alt />Bienvenido, {{userLogin.name}}
           </li>
           <li id="buttonLogout" @click="changeMenu()">Logout</li>
         </ul>
@@ -54,28 +59,28 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "Menu",
   data() {
     return {
       userLogin: {
-        emailLogin: "",
-        passLogin: ""
+        email: "",
+        password: ""
       },
       userRegister: {
         nameRegister: "",
         nicknameRegister: "",
         emailRegister: "",
         passRegister: ""
-      }
+      },
+      url: "http://localhost:3000/users"
     };
   },
   methods: {
     setLogin: function() {
       let button = document.getElementById("login");
-      /*eslint-disable no-console*/
-      console.log(typeof button.style.opacity);
-      /*eslint-disable no-console*/
       if (button.style.opacity == "") {
         button.style.opacity = 1;
         button.style.zIndex = 11;
@@ -111,7 +116,30 @@ export default {
     },
 
     login: function() {
-      this.$router.push("/myArticles");
+      axios
+        .post(this.url + "/login", this.userLogin)
+        .then(res => {
+          if (res.data.ok) {
+            this.userLogin = res.data.user;
+            const token = res.data.token;
+            localStorage.setItem('token', token);
+            axios.defaults.headers.common['Authorization'] = token;
+          }
+        })
+        .catch(error => {
+          /*eslint-disable no-console*/
+          console.log(error);
+          console.log("Usuario o contraseña incorrecto");
+          /*eslint-disable no-console*/
+        });
+      this.$router.push("/21/newPost");
+      this.changeMenu();
+    },
+
+    logout:function() {
+      this.userLogin.email = '';
+      this.userLogin.password = '';
+      this.$router.push("/home");
       this.changeMenu();
     },
 

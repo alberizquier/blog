@@ -5,25 +5,76 @@
       <hr />
     </div>
     <div id="post">
-        <button id="image">Agregar imagen</button>
-        <br>
-        <textarea placeholder="Escribe aquí tu artículo..." name="post" id="newPost" cols="30" rows="10"></textarea>
-        <br>
-        <button id="public">Publicar</button>
+      <input
+        id="title"
+        type="text"
+        v-model="article.contentTitle"
+        placeholder="Escribe un título..."
+      />
+      <textarea
+        placeholder="Escribe aquí tu artículo..."
+        name="post"
+        id="newPost"
+        cols="30"
+        rows="10"
+        v-model="article.contentText"
+      ></textarea>
+      <input
+        id="image"
+        type="text"
+        v-model="article.image"
+        placeholder="Copia aquí el link de tu imagen..."
+      />
+      <select v-model="article.continent" id="continent" name="continent">
+        <option>¿Sobre qué continente has escrito?</option>
+        <option>Europa</option>
+        <option>África</option>
+        <option>América</option>
+        <option>Asia</option>
+        <option>Oceanía</option>
+      </select>
+      <br />
+      <button id="public" @click="save()">Publicar</button>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+import Article from "../models/Articles.js";
+
 export default {
   name: "NewPost",
-  mounted(){
+  mounted() {
     this.id_from_url = this.$route.params.id;
   },
   data() {
     return {
-      id_from_url: null
+      id_from_url: null,
+      article: new Article("", "", "", "", "", "", null),
+      url: "http://localhost:3000/posts"
     };
+  },
+  methods: {
+    save() {
+      const auth = {
+        headers: { token: localStorage.getItem("token") }
+      };
+      /*eslint-disable no-console*/
+          console.log(auth);
+          /*eslint-disable no-console*/
+      axios.post(this.url, auth, this.article)
+        .then(res => {
+          /*eslint-disable no-console*/
+          console.log(res);
+          /*eslint-disable no-console*/
+        })
+        .catch(error => {
+          /*eslint-disable no-console*/
+          console.log(error);
+          /*eslint-disable no-console*/
+        });
+    }
   }
 };
 </script>
@@ -51,16 +102,17 @@ div#container div#title hr {
 
 div#container div#post {
   width: 70%;
+  margin-bottom: 100px;
 }
 
-div#container div#post button#image {
-  border: none;
-  background-color: #35495e;
-  width: 255px;
-  height: 50px;
-  color: white;
-  font-family: "Bebas Neue", cursive;
-  font-size: 18pt;
+div#container div#post input#title {
+  max-width: 100%;
+  min-width: 100%;
+  max-height: 30px;
+  min-height: 30px;
+  padding: 10px;
+  font-family: "Dosis", sans-serif;
+  font-size: 16pt;
   margin-bottom: 50px;
 }
 
@@ -72,6 +124,30 @@ div#container div#post textarea {
   padding: 10px;
   font-family: "Dosis", sans-serif;
   font-size: 16pt;
+  margin-bottom: 30px;
+}
+
+div#container div#post input#image {
+  max-width: 100%;
+  min-width: 100%;
+  max-height: 30px;
+  min-height: 30px;
+  padding: 10px;
+  font-family: "Dosis", sans-serif;
+  font-size: 16pt;
+  margin-bottom: 50px;
+}
+
+div#container div#post select {
+  max-width: 450px;
+  min-width: 450px;
+  max-height: 60px;
+  min-height: 60px;
+  padding: 10px;
+  font-family: "Dosis", sans-serif;
+  font-size: 16pt;
+  margin-bottom: 50px;
+  background-color: white;
 }
 
 div#container div#post button#public {
@@ -83,7 +159,5 @@ div#container div#post button#public {
   font-family: "Bebas Neue", cursive;
   font-size: 18pt;
   margin-top: 20px;
-  
 }
-
 </style>

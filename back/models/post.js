@@ -8,6 +8,8 @@ const postSchema = new Schema({
     contentTitle : String,
     contentText  : String,
     image : String,
+    continent : String,
+    date: Date,
     commentsList : Array
 });
 

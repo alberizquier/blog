@@ -11,9 +11,9 @@
           <h3>{{article.contentTitle}}</h3>
           <p>{{article.contentText}}</p>
           <p>{{article.date.toString()}}</p>
-          <button>
-            <router-link to="/post">Leer más</router-link>
-          </button>
+          <router-link :to="{ name: 'Post', params: {id: article._id} }">
+            <button>Leer más</button>
+          </router-link>
           <img id="imgBkg" :src="article.image" alt />
         </div>
       </div>
@@ -108,12 +108,10 @@ div#container div#article div#hideDiv img#imgSup {
   z-index: 1;
   top: 0;
   left: 0;
-  transition-property: opacity;
-  transition-duration: 0.5s;
 }
 
 div#container div#article div#hideDiv img#imgSup:hover {
-  opacity: 0;
+  display: none;
 }
 
 div#container div#hideDiv h3 {
@@ -139,7 +137,7 @@ div#container div#hideDiv button {
   border: none;
 }
 
-div#container div#hideDiv button a {
+div#container div#hideDiv button {
   font-family: "Bebas Neue", cursive;
   font-size: 18pt;
   color: white;

@@ -7,9 +7,6 @@
           <li>
             <router-link to="/">Inicio</router-link>
           </li>
-          <li>
-            <router-link to="/destinations">Destinos</router-link>
-          </li>
           <li id="edge">
             <router-link to="/articles">Artículos</router-link>
           </li>
@@ -42,9 +39,6 @@
         <ul>
           <li>
             <router-link to="/">Inicio</router-link>
-          </li>
-          <li>
-            <router-link to="/destinations">Destinos</router-link>
           </li>
           <li id="edge">
             <router-link to="/articles">Artículos</router-link>
@@ -133,9 +127,10 @@ export default {
             if (res.data.ok) {
               this.userLogin = res.data.user;
               const token = "Bearer " + res.data.token;
-              localStorage.setItem("token", token);
+              localStorage.setItem("token", token); 
+              localStorage.setItem("user", this.userLogin);
               axios.defaults.headers.common["Authorization"] = token;
-              this.$router.push("/newPost");
+              this.$router.push("/articles");
               this.changeMenu();
             }
           })

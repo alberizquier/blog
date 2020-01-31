@@ -49,10 +49,11 @@ router.post('/posts/:id/comments', [ tokenVerify, roleVerify, wordVerifyComments
     }
     let comment = new Comment({
         postId : id,
-        authorCommentNickname: req.body.authorCommentNickname,
+        authorCommentNickname: req.userData.name,
         commentContent: req.body.commentContent,
         date: new Date()
     });
+    console.log(req.userData.name);
     await comment.save();
     post.commentsList.push({
         id: comment._id,

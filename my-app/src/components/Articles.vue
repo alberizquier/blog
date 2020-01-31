@@ -10,9 +10,9 @@
           <img id="imgSup" :src="article.image" alt= />
           <h3>{{article.contentTitle}}</h3>
           <p>{{article.contentText}}</p>
-          <p>{{article.date}}</p>
+          <p>{{article.date.toString()}}</p>
           <button>
-            <router-link to="/Post">Leer más</router-link>
+            <router-link to="/post">Leer más</router-link>
           </button>
           <img id="imgBkg" :src="article.image" alt />
         </div>
@@ -40,9 +40,9 @@ export default {
       axios.get(this.url).then(res => {
         if (res.data.ok) {
           this.articles = res.data.posts;
-          // /*eslint-disable no-console*/
-          // console.log(this.articles);
-          // /*eslint-disable no-console*/
+          /*eslint-disable no-console*/
+          console.log(this.articles);
+          /*eslint-disable no-console*/
         }
       });
     }

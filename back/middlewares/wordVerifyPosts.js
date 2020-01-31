@@ -1,18 +1,30 @@
 const BadWord = require('../models/badWord');
 
 let wordVerifyPosts = async (req, res, next) => {
-    let post = req.body.contentText;
+    // req.body.article = {
+    //     authorName : "Hulk",
+    //     authorNickname : "Hulky",
+    //     contentTitle : "Soy verde",
+    //     contentText : "Muy verde",
+    //     continent : "Hulkilandia",
+    //     image : "hulk.jpg",
+    //     date : "hoy"
+    // };
+    // console.log("req at wordVerifyPosts: ", req);
+
+    let postTitle = req.body.contentTitle;
+    let postText = req.body.contentText;
     let words = await BadWord.find();
     let offensiveWordsInText = [];
     let offensiveWords = [];
 
     for (let i = 0; i < words.length; i++) {
-        offensiveWords.push(words[i].word);
+        offensiveWords.push({'word' : words[i].word, 'level': words[i].level});
     }
-
+    
     for (let i = 0; i < offensiveWords.length; i++) {
-        if (post.includes(offensiveWords[i])) {
-            offensiveWordsInText.push(offensiveWords[i]);
+        if (postTitle.includes(offensiveWords[i].word) || postText.includes(offensiveWords[i].word)) {
+            offensiveWordsInText.push({ 'word' : offensiveWords[i].word, 'level' : offensiveWords[i].level });
         }
     }
 

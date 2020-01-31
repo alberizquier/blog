@@ -75,6 +75,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "Post",
   mounted(){
@@ -82,8 +84,18 @@ export default {
   },
   data() {
     return {
-
+      article: null,
+      url: "http://localhost:3000/posts"
     };
+  },
+  methods: {
+    getArticle: function (articleId) {
+      axios.get(this.url + articleId).then(res => {
+        if(res.data.ok) {
+          this.article = res.data.article;
+        }
+      })
+    }
   }
 };
 </script>

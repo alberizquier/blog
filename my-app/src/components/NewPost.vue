@@ -57,13 +57,14 @@ export default {
   },
   methods: {
     save() {
-      const auth = {
-        headers: { token: localStorage.getItem("token") }
-      };
+      // const auth = {
+      //   headers: { token: localStorage.getItem("token") }
+      // };
       /*eslint-disable no-console*/
-          console.log(auth);
+           console.log("this.article: ", this.article);
+           
           /*eslint-disable no-console*/
-      axios.post(this.url, auth, this.article)
+      axios.post(this.url, this.article)
         .then(res => {
           /*eslint-disable no-console*/
           console.log(res);

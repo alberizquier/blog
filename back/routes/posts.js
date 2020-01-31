@@ -22,15 +22,18 @@ router.get('/posts', (req, res) => {
 });
 
 router.post('/posts', [ tokenVerify, roleVerify, wordsVerifyPosts ], (req, res) => {
+    console.log('Before body: ', req);
     let post = new Post({
-        authorName: req.body.authorName,
-        authorNickname: req.body.authorNickname,
+        authorName: req.userData.name,
+        authorNickname: req.userData.nickname,
         contentTitle: req.body.contentTitle,
         contentText: req.body.contentText,
         image : req.body.image,
         continent : req.body.continent,
         date : new Date()
     });
+    req.body = post;
+    console.log('Afer body: ', req);
 
     Post.find({})
         .exec((err, posts) => {

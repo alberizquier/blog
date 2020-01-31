@@ -28,7 +28,7 @@ const routes = [
     component: Articles
   },
   {
-    path: '/:id/newPost',
+    path: '/newPost',
     name: 'newPost',
     component: NewPost
   },
@@ -38,8 +38,8 @@ const routes = [
     component: UserArea
   },
   {
-    path: '/post/:id?',
-    name: 'post',
+    path: '/post',
+    name: 'Post',
     component: Post
   },
   {

@@ -1,7 +1,7 @@
 <template>
   <div id="container">
     <div id="menu">
-      <img src="../assets/logo_fag.png" alt />
+      <router-link to="/"><img src="../assets/logo_fag.png" alt /></router-link>
       <nav>
         <ul>
           <li>
@@ -18,20 +18,21 @@
         </ul>
       </nav>
       <div id="login">
-        <input type="text" placeholder="Email" id="email" v-model="userLogin.email" />
-        <input type="text" placeholder="Contraseña" id="pass" v-model="userLogin.password" />
-        <button @click="login()">Acceder</button>
-      </div>
-      <div id="register">
-        <input type="text" placeholder="Nombre" id="name" v-model="userRegister.nameRegister" />
+        <input type="text" placeholder="Email" id="emailLogin" v-model="userLogin.email" />
+        <input type="password" placeholder="Contraseña" id="passLogin" v-model="userLogin.password" />
+        <button id="confirm" @click="login()">Acceder</button>
         <input
           type="text"
-          placeholder="Apodo"
-          id="nickname"
-          v-model="userRegister.nicknameRegister"
+          id="incorrect"
+          placeholder="¡Oh no, usuario o contraseña incorrectos!"
+          readonly="readonly"
         />
-        <input type="text" placeholder="Email" id="email" v-model="userRegister.emailRegister" />
-        <input type="text" placeholder="Contraseña" id="pass" v-model="userRegister.passRegister" />
+      </div>
+      <div id="register">
+        <input type="text" placeholder="Nombre" id="name" v-model="userRegister.name" />
+        <input type="text" placeholder="Apodo" id="nickname" v-model="userRegister.nickname" />
+        <input type="text" placeholder="Email" id="email" v-model="userRegister.email" />
+        <input type="password" placeholder="Contraseña" id="pass" v-model="userRegister.password" />
         <button @click="register()">Enviar</button>
       </div>
     </div>
@@ -49,7 +50,8 @@
             <router-link to="/articles">Artículos</router-link>
           </li>
           <li id="welcome">
-            <img src="../assets/user.png" alt />Bienvenido, {{userLogin.name}}
+            <img src="../assets/user.png" alt />
+            Bienvenido, {{userLogin.name}}
           </li>
           <li id="buttonLogout" @click="changeMenu()">Logout</li>
         </ul>
@@ -70,10 +72,11 @@ export default {
         password: ""
       },
       userRegister: {
-        nameRegister: "",
-        nicknameRegister: "",
-        emailRegister: "",
-        passRegister: ""
+        name: "",
+        nickname: "",
+        email: "",
+        password: "",
+        role: "publisher"
       },
       url: "http://localhost:3000/users"
     };
@@ -116,36 +119,61 @@ export default {
     },
 
     login: function() {
-      axios
-        .post(this.url + "/login", this.userLogin)
-        .then(res => {
-          if (res.data.ok) {
-            this.userLogin = res.data.user;
-            const token = res.data.token;
-            localStorage.setItem('token', token);
-            axios.defaults.headers.common['Authorization'] = token;
-          }
-        })
-        .catch(error => {
-          /*eslint-disable no-console*/
-          console.log(error);
-          console.log("Usuario o contraseña incorrecto");
-          /*eslint-disable no-console*/
-        });
-      this.$router.push("/21/newPost");
-      this.changeMenu();
+      let emailLogin = document.getElementById("emailLogin");
+      let passLogin = document.getElementById("passLogin");
+      let incorrect = document.getElementById("incorrect");
+      let divLogin = document.getElementById("login");
+      if (emailLogin.value == "" && passLogin.value == "") {
+        incorrect.style.visibility = "visible";
+        divLogin.style.height = "200px";
+      } else {
+        axios
+          .post(this.url + "/login", this.userLogin)
+          .then(res => {
+            if (res.data.ok) {
+              this.userLogin = res.data.user;
+              const token = "Bearer " + res.data.token;
+              localStorage.setItem("token", token);
+              axios.defaults.headers.common["Authorization"] = token;
+              this.$router.push("/newPost");
+              this.changeMenu();
+            }
+          })
+          .catch(error => {
+            incorrect.style.visibility = "visible";
+            divLogin.style.height = "200px";
+            /*eslint-disable no-console*/
+            console.log(error);
+            console.log("Usuario o contraseña incorrecto");
+            /*eslint-disable no-console*/
+          });
+      }
     },
 
-    logout:function() {
-      this.userLogin.email = '';
-      this.userLogin.password = '';
+    logout: function() {
       this.$router.push("/home");
       this.changeMenu();
     },
 
     register: function() {
-      this.$router.push("/myArticles");
-      this.changeMenu();
+      axios
+        .post(this.url, this.userRegister)
+        .then(res => {
+          if (res.data.ok) {
+            this.userRegister = res.data.user;
+            /*eslint-disable no-console*/
+            console.log("Usuario creado correctamente");
+            /*eslint-disable no-console*/
+          }
+        })
+        .catch(error => {
+          /*eslint-disable no-console*/
+          console.log(error);
+          console.log("No se pudo crear el usuario");
+          /*eslint-disable no-console*/
+        });
+      this.setRegister();
+      this.setLogin();
     }
   }
 };
@@ -237,6 +265,39 @@ div#login input {
   margin-top: 15px;
   border: 1pt solid #35495e;
   padding-left: 10%;
+}
+
+div#login input#emailLogin {
+  background-image: url("../assets/email.png");
+  background-size: 20px;
+  background-repeat: no-repeat;
+  background-position: left;
+  background-position-x: 5px;
+}
+
+div#login input#passLogin {
+  background-image: url("../assets/pass.png");
+  background-size: 20px;
+  background-repeat: no-repeat;
+  background-position: left;
+  background-position-x: 5px;
+}
+
+div#login input#incorrect {
+  width: 90%;
+  height: 35px;
+  margin-left: 5%;
+  margin-top: 0;
+  border: none;
+  padding-left: 0;
+  text-align: center;
+  background-color: rgb(255, 255, 255, 0);
+  visibility: hidden;
+}
+
+div#login input#incorrect::placeholder {
+  color: red;
+  font-weight: bold;
 }
 
 input#name,

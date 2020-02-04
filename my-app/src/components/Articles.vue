@@ -7,13 +7,13 @@
     <div id="posts">
       <div id="article" v-for="article in articles" :key="article._id">
         <div id="hideDiv">
-          <img id="imgSup" :src="article.image" alt= />
+          <router-link
+            :to="{ name: 'Post', params: {id: article._id} }"
+          ><img id="imgSup" :src="article.image" alt= /></router-link>
           <h3>{{article.contentTitle}}</h3>
           <p>{{article.contentText}}</p>
           <p>{{article.date.toString()}}</p>
-          <router-link :to="{ name: 'Post', params: {id: article._id} }">
-            <button>Leer más</button>
-          </router-link>
+          <button>Leer más</button>
           <img id="imgBkg" :src="article.image" alt />
         </div>
       </div>
@@ -40,9 +40,18 @@ export default {
       axios.get(this.url).then(res => {
         if (res.data.ok) {
           this.articles = res.data.posts;
+          for(let article in this.articles){
+          const day = this.articles[article].date.substr(8, 2);
+          const month = this.articles[article].date.substr(5, 2);
+          const year = this.articles[article].date.substr(0, 4);
+          const beautyDate = day + ' - ' + month + ' - ' + year;
+          this.articles[article].date = beautyDate;
           /*eslint-disable no-console*/
-          console.log(this.articles);
+          //console.log(beautyDate);
           /*eslint-disable no-console*/
+          }
+          // this.article = res.data.post;
+          // this.articles.date = day + ' - ' + month + ' - ' + year + ', ' + hour;
         }
       });
     }
@@ -108,10 +117,12 @@ div#container div#article div#hideDiv img#imgSup {
   z-index: 1;
   top: 0;
   left: 0;
+  transition-property: opacity;
+  transition-duration: 0.5s;
 }
 
 div#container div#article div#hideDiv img#imgSup:hover {
-  display: none;
+  opacity: 0;
 }
 
 div#container div#hideDiv h3 {

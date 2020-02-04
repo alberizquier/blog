@@ -66,9 +66,13 @@ export default {
       axios.get(this.url + articleId).then(res => {
         if (res.data.ok) {
           this.article = res.data.post;
-          // /*eslint-disable no-console*/
-          // console.log(this.article);
-          // /*eslint-disable no-console*/
+          const day = this.article.date.substr(8, 2);
+          const month = this.article.date.substr(5, 2);
+          const year = this.article.date.substr(0, 4);
+          this.article.date = day + ' - ' + month + ' - ' + year;
+          /*eslint-disable no-console*/
+          console.log();
+          /*eslint-disable no-console*/
         }
       });
     },

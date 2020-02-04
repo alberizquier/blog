@@ -5,7 +5,6 @@
       <hr />
     </div>
     <div id="main" v-for="article in articles.slice(0,1)" :key="article._id">
-      
       <div id="backgroundText">
         <h2>{{article.contentTitle}}</h2>
         <p>{{article.contentText}}</p>
@@ -17,12 +16,12 @@
     </div>
     <div id="seconds">
       <div id="article" v-for="article in articles.slice(1,4)" :key="article._id">
-        <img id="imgSup" :src="article.image" alt />
+        <router-link :to="{ name: 'Post', params: {id: article._id} }">
+          <img id="imgSup" :src="article.image" alt />
+        </router-link>
         <h3>{{article.contentTitle}}</h3>
         <p>{{article.contentText}}</p>
-        <router-link :to="{ name: 'Post', params: {id: article._id} }">
-          <button>Leer más</button>
-        </router-link>
+        <button>Leer más</button>
         <img id="imgBkg" :src="article.image" alt />
       </div>
     </div>
@@ -167,7 +166,7 @@ div#container div#article img#imgSup {
 }
 
 div#container div#article img#imgSup:hover {
-  display:none;
+  opacity: 0;
 }
 
 div#container h3 {

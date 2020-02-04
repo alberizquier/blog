@@ -33,7 +33,6 @@ router.post('/posts', [ tokenVerify, roleVerify, wordsVerifyPosts ], (req, res) 
         date : new Date()
     });
     req.body = post;
-    console.log('Afer body: ', req);
 
     Post.find({})
         .exec((err, posts) => {

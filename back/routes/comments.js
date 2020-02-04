@@ -53,7 +53,7 @@ router.post('/posts/:id/comments', [ tokenVerify, roleVerify, wordVerifyComments
         commentContent: req.body.commentContent,
         date: new Date()
     });
-    console.log(req.userData.name);
+    
     await comment.save();
     post.commentsList.push({
         id: comment._id,

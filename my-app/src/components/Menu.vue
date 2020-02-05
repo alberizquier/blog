@@ -1,7 +1,9 @@
 <template>
   <div id="container">
     <div id="menu">
-      <router-link to="/"><img src="../assets/logo_fag.png" alt /></router-link>
+      <router-link to="/">
+        <img src="../assets/logo_fag.png" alt />
+      </router-link>
       <nav>
         <ul>
           <li>
@@ -47,7 +49,7 @@
             <img src="../assets/user.png" alt />
             Bienvenido, {{userLogin.name}}
           </li>
-          <li id="buttonLogout" @click="changeMenu()">Logout</li>
+          <li id="buttonLogout" @click="logout()">Logout</li>
         </ul>
       </nav>
     </div>
@@ -99,16 +101,16 @@ export default {
     changeMenu: function() {
       let menu = document.getElementById("menu");
       let menuActive = document.getElementById("menuActive");
-      if (menuActive.style.opacity == "") {
-        menuActive.style.opacity = 1;
-        menuActive.style.zIndex = 10;
-        menu.style.opacity = 0;
-        menu.style.zIndex = -1;
-      } else {
+      if (!localStorage.getItem('token')) {
         menuActive.style.opacity = "";
         menuActive.style.zIndex = -1;
         menu.style.opacity = 1;
         menu.style.zIndex = 10;
+      } else {
+        menuActive.style.opacity = 1;
+        menuActive.style.zIndex = 10;
+        menu.style.opacity = 0;
+        menu.style.zIndex = -1;
       }
     },
 
@@ -126,9 +128,8 @@ export default {
           .then(res => {
             if (res.data.ok) {
               this.userLogin = res.data.user;
-              const token = "Bearer " + res.data.token;
-              localStorage.setItem("token", token); 
-              localStorage.setItem("user", this.userLogin);
+              const token = res.data.token;
+              localStorage.setItem("token", token);
               axios.defaults.headers.common["Authorization"] = token;
               this.$router.push("/articles");
               this.changeMenu();
@@ -146,7 +147,8 @@ export default {
     },
 
     logout: function() {
-      this.$router.push("/home");
+      localStorage.removeItem('token');
+      this.$router.push("/");
       this.changeMenu();
     },
 

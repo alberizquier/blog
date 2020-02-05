@@ -51,7 +51,7 @@ export default {
   data() {
     return {
       id_from_url: null,
-      article: new Article("", "", "", "", "", "", null),
+      article: new Article("", "", "", "", "", [], "", null),
       url: "http://localhost:3000/posts"
     };
   },

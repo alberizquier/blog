@@ -17,7 +17,7 @@
       <div id="morePosts">
         <div id="relationPost" v-for="article in articles.slice(2,6)" :key="article._id">
           <router-link :to="{ name: 'Post', params: {id: article._id} }">
-          <img :src="article.image" alt />
+            <img :src="article.image" alt />
           </router-link>
           <h4>{{article.contentTitle}}</h4>
         </div>
@@ -25,8 +25,9 @@
     </div>
     <div id="comments">
       Comentarios
-      <hr />
-      <div id="comment" v-for="comment in article.commentsList" :key="comment._id">
+      <hr>
+
+      <div id="comment" v-for="comment of article.commentsList" :key="comment._id">
         <span id="dateComment">{{comment.date}}</span>
         <h4>{{comment.authorCommentNickname}}, dijo:</h4>
         <p>{{comment.commentContent}}</p>
@@ -52,6 +53,10 @@ export default {
     this.getArticle(articleId);
     this.getArticles();
   },
+  updated (){
+    const articleId = this.$route.params.id;
+    this.getArticle(articleId)
+  },
   data() {
     return {
       articles: [],
@@ -69,7 +74,7 @@ export default {
           const day = this.article.date.substr(8, 2);
           const month = this.article.date.substr(5, 2);
           const year = this.article.date.substr(0, 4);
-          this.article.date = day + ' - ' + month + ' - ' + year;
+          this.article.date = day + " - " + month + " - " + year;
           /*eslint-disable no-console*/
           console.log();
           /*eslint-disable no-console*/
@@ -87,13 +92,20 @@ export default {
       });
     },
     saveComment: function() {
+      let token = localStorage.getItem('token');
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
       axios
-        .post(this.url + this.article._id + "/comments", this.comment)
+        .post(this.url + this.article._id + "/comments", this.comment, config)
         .then(res => {
           this.comment = res.data.comment;
           /*eslint-disable no-console*/
-          console.log(this.comment.authorCommentNickname);
+          console.log("authorCommentNickname:",this.comment.authorCommentNickname);
           /*eslint-disable no-console*/
+          this.getArticle(this.article._id);
         })
         .catch(error => {
           /*eslint-disable no-console*/

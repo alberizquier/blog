@@ -12,7 +12,7 @@
           ><img id="imgSup" :src="article.image" alt= /></router-link>
           <h3>{{article.contentTitle}}</h3>
           <p>{{article.contentText}}</p>
-          <p>{{article.date.toString()}}</p>
+          <p>{{article.date}}</p>
           <button>Leer más</button>
           <img id="imgBkg" :src="article.image" alt />
         </div>
